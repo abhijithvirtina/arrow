@@ -1,0 +1,210 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# Arrow API
+An API to sync WooCommerce with Smartequip and GlobalShop.
+
+## Arrow with Smartequip APIs list
+## API that sent orders from smartequip to Arrow [/seorders]
+### Purchase Order Details  [POST]
+
++ Request (application/json)
+
+        {
+            "seorderid": "1234",
+            "billing": [
+                    {
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "address_1": "969 Market",
+                        "address_2": "",
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postcode": "94103",
+                        "country": "US",
+                        "email": "john.doe@example.com",
+                        "phone": "(555) 555-5555"
+                    }
+            ],
+            "shipping": [
+                    {
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "address_1": "969 Market",
+                        "address_2": "",
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postcode": "94103",
+                        "country": "US",
+                        "email": "john.doe@example.com",
+                        "phone": "(555) 555-5555"
+                    }
+            ],
+            "line_items": [
+                    {
+                        "product_id": 93,
+                        "quantity": 3
+                    },
+                    {
+                        "product_id": 22,
+                        "variation_id": 23,
+                        "quantity": 2
+                    }
+            ],
+            "shipping_lines": [
+                    {
+                        "method_id": "flat_rate",
+                        "method_title": "Flat Rate",
+                        "total": 10
+                    }
+            ],
+            "customerid": "5673",
+            "locationid": "87453",
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            UUID: 123456789009876543211234567890123456
+            Accountnumber: 123432343
+            Username: seaccount
+            Password: sepassword
+            Locationid: 1243
+            Language: ISO 639-1
+
+    + Body
+
+            {
+                "status": "success",
+                "seorderid": "1234",
+                "arroworderid": "4321"
+            }
+
+
+## API to sent SO Number from Arrow to Smartequip [/sesonumber]
+### SO Number from Arrow to Smartequip [GET]
+
++ Request (application/json)
+
+        {
+            "seorderid": "1234"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            UUID: 123456789009876543211234567890123456
+            Accountnumber: 123432343
+            Username: seaccount
+            Password: sepassword
+            Locationid: 1243
+            Language: ISO 639-1
+
+    + Body
+
+            {
+                "status": "success",
+                "seorderid": "1234",
+                "SOnumber": "09876"
+            }
+
+## Arrow with Globalshop APIs list [/gssorder]
+### Sent Order Details to GlobalShop  [GET]
+
++ Request (application/json)
+
+        {
+            "seorderid": "1234" // not mandatory
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "seorderid": 1234,
+                "id": 4536,
+                "wooseorderid" : 1234-4536,
+                "line_items": [
+                            {
+                                "seproduct_id": 93,
+                                "product_id": 123,
+                                "quantity": 3
+                            },
+                            {
+                                "seproduct_id": 22,
+                                "product_id": 2545,
+                                "sevariation_id": 23,
+                                "variation_id": 2378,
+                                "quantity": 2
+                            }
+                ],
+                "billing": [
+                  "first_name": "John",
+                  "last_name": "Doe",
+                  "company": "",
+                  "address_1": "969 Market",
+                  "address_2": "",
+                  "city": "San Francisco",
+                  "state": "CA",
+                  "postcode": "94103",
+                  "country": "US",
+                  "email": "john.doe@example.com",
+                  "phone": "(555) 555-5555"
+                ],
+                "shipping": [
+                  "first_name": "John",
+                  "last_name": "Doe",
+                  "company": "",
+                  "address_1": "969 Market",
+                  "address_2": "",
+                  "city": "San Francisco",
+                  "state": "CA",
+                  "postcode": "94103",
+                  "country": "US"
+                ],
+                 "customerid": 318,
+                 "locationid": 318,
+
+            }
+
+
+## API that sent SO Number from Globalshop to Arrow [/gssonumber]
+### SO Number to receive from Globalshop to Arrow [POST]
+
++ Request (application/json)
+
+        {
+            "wooseorderid" : 1234-4536,
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": "success",
+                "WooSOnumber": "435657",
+                "GSSOnumber": "09876"
+            }
+            
+
+## API that sent Order Status from Globalshop to Arrow [/gsorderstatus]
+### Order Status to receive from Globalshop to Arrow [POST]
+
++ Request (application/json)
+
+        {
+            "wooseorderid" : 1234-4536,
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": "success",
+                "SOnumber": "09876"
+            }
